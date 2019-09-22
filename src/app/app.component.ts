@@ -7,7 +7,7 @@ import { Moment } from 'moment';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  @ViewChild('myCalendar')
+  @ViewChild('myCalendar', { static: true })
   myCalendar: CalendarComponent;
 
   dateSelected(value: Moment) {

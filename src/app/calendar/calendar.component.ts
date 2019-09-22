@@ -16,7 +16,7 @@ export class CalendarComponent implements AfterViewInit {
   @Output()
   selectedDate = moment();
 
-  @ViewChild('calendar')
+  @ViewChild('calendar', { static: true })
   calendar: MatCalendar<Moment>;
 
   constructor(private renderer: Renderer2) { }
