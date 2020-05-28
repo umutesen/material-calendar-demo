@@ -1,6 +1,8 @@
-import { Component, Output, EventEmitter, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
-import { Moment } from 'moment';
 import * as moment from 'moment';
+
+import {
+    AfterViewInit, Component, EventEmitter, Output, Renderer2, ViewChild
+} from '@angular/core';
 import { MatCalendar } from '@angular/material';
 
 @Component({
@@ -11,17 +13,29 @@ import { MatCalendar } from '@angular/material';
 export class CalendarComponent implements AfterViewInit {
 
   @Output()
-  dateSelected: EventEmitter<Moment> = new EventEmitter();
+  dateSelected: EventEmitter<moment.Moment> = new EventEmitter();
 
   @Output()
   selectedDate = moment();
 
   @ViewChild('calendar', { static: true })
-  calendar: MatCalendar<Moment>;
+  calendar: MatCalendar<moment.Moment>;
+
+  minDate;
+  maxDate;
 
   constructor(private renderer: Renderer2) { }
 
+  setMinDate() {
+    this.minDate = moment().add(-10, 'day');
+  }
+
+  setMaxDate() {
+    this.maxDate = moment().add(10, 'day');
+  }
+
   ngAfterViewInit() {
+
     const buttons = document.querySelectorAll('.mat-calendar-previous-button, .mat-calendar-next-button');
 
     if (buttons) {
@@ -33,7 +47,7 @@ export class CalendarComponent implements AfterViewInit {
     }
   }
 
-  monthSelected(date: Moment) {
+  monthSelected(date: moment.Moment) {
     console.log('month changed');
   }
 
