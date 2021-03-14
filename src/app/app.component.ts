@@ -1,16 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
-import { CalendarComponent } from './calendar/calendar.component';
 import { Moment } from 'moment';
+
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  @ViewChild('myCalendar', { static: true })
-  myCalendar: CalendarComponent;
-
   dateSelected(value: Moment) {
+    alert(value);
+  }
+
+  monthSelected(value: Moment) {
     alert(value);
   }
 }
