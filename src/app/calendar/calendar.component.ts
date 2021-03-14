@@ -1,6 +1,8 @@
-import { Component, Output, EventEmitter, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
-import { Moment } from 'moment';
 import * as moment from 'moment';
+
+import {
+    AfterViewInit, Component, EventEmitter, Output, Renderer2, ViewChild
+} from '@angular/core';
 import { MatCalendar } from '@angular/material';
 
 @Component({
@@ -9,17 +11,28 @@ import { MatCalendar } from '@angular/material';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements AfterViewInit {
-
-  @Output()
-  dateSelected: EventEmitter<Moment> = new EventEmitter();
-
-  @Output()
   selectedDate = moment();
+  minDate: moment.Moment;
+  maxDate: moment.Moment;
+
+  @Output()
+  dateSelected: EventEmitter<moment.Moment> = new EventEmitter();
+
+  @Output()
+  monthSelected: EventEmitter<moment.Moment> = new EventEmitter();
 
   @ViewChild('calendar', { static: true })
-  calendar: MatCalendar<Moment>;
+  calendar: MatCalendar<moment.Moment>;
 
   constructor(private renderer: Renderer2) { }
+
+  setMinDate() {
+    this.minDate = moment().add(-10, 'day');
+  }
+
+  setMaxDate() {
+    this.maxDate = moment().add(10, 'day');
+  }
 
   ngAfterViewInit() {
     const buttons = document.querySelectorAll('.mat-calendar-previous-button, .mat-calendar-next-button');
@@ -27,14 +40,14 @@ export class CalendarComponent implements AfterViewInit {
     if (buttons) {
       Array.from(buttons).forEach(button => {
         this.renderer.listen(button, 'click', () => {
-          console.log('Arrow buttons clicked');
+          this.monthSelected.emit(this.calendar.activeDate);
         });
       });
     }
   }
 
-  monthSelected(date: Moment) {
-    console.log('month changed');
+  monthChanged(date: moment.Moment) {
+    this.monthSelected.emit(date);
   }
 
   dateChanged() {
