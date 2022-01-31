@@ -43,7 +43,7 @@ export class CalendarComponent implements AfterViewInit {
     // const year = parseInt(this.calendar.activeDate.format('Y'));
     // this.backendService.getAvailableDays(month, year);
 
-    const datesToHighlight = ["January 20, 2022", "January 31, 2022"];
+    const datesToHighlight = ['January 20, 2022', 'January 31, 2022'];
 
     of(datesToHighlight).subscribe((results) => {
       this.highlightDays(results);
@@ -62,12 +62,11 @@ export class CalendarComponent implements AfterViewInit {
     }
   }
 
-  // expected parameter format: 
   /**
    * @param days: Array of strings to highlight in the format "February 20, 2020"
    */
   public highlightDays(days: string[]) {
-    let dayElements = document.querySelectorAll(
+    const dayElements = document.querySelectorAll(
       '.mat-calendar-table .mat-calendar-body-cell'
     );
 
