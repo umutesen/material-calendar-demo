@@ -1,10 +1,9 @@
 import * as moment from 'moment';
 
 import {
-  AfterViewInit, Component, EventEmitter, Output, Renderer2, ViewChild
+  AfterViewInit, Component, EventEmitter, OnChanges, Output, Renderer2, ViewChild
 } from '@angular/core';
 import { MatCalendar } from '@angular/material';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -37,50 +36,21 @@ export class CalendarComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.setupArrowButtonListeners();
-
-    //// Get current month/year selected in calendar to facilitate backend call
-    // const month = parseInt(this.calendar.activeDate.format('M'));
-    // const year = parseInt(this.calendar.activeDate.format('Y'));
-    // this.backendService.getAvailableDays(month, year);
-
-    const datesToHighlight = ['January 20, 2022', 'January 31, 2022'];
-
-    of(datesToHighlight).subscribe((results) => {
-      this.highlightDays(results);
-    });
   }
+
 
   private setupArrowButtonListeners() {
     const buttons = document.querySelectorAll('.mat-calendar-previous-button, .mat-calendar-next-button');
 
     if (buttons) {
       Array.from(buttons).forEach(button => {
-        this.renderer.listen(button, 'click', () => {
-          this.monthSelected.emit(this.calendar.activeDate);
-        });
+        this.renderer.listen(button, 'click', () => this.arrowButtonClicked());
       });
     }
   }
 
-  /**
-   * @param days: Array of strings to highlight in the format "February 20, 2020"
-   */
-  public highlightDays(days: string[]) {
-    const dayElements = document.querySelectorAll(
-      '.mat-calendar-table .mat-calendar-body-cell'
-    );
-
-    Array.from(dayElements).forEach((element) => {
-      const matchingDay = days.find((d) => d === element.getAttribute('aria-label')) !== undefined;
-
-      if (matchingDay) {
-        this.renderer.addClass(element, 'available');
-        this.renderer.setAttribute(element, 'title', 'Event 1');
-      } else {
-        this.renderer.removeClass(element, 'available');
-        this.renderer.removeAttribute(element, 'title');
-      }
-    });
+  private arrowButtonClicked() {
+    this.monthSelected.emit(this.calendar.activeDate);
   }
 
   monthChanged(date: moment.Moment) {
